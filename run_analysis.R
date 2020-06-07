@@ -27,7 +27,6 @@ X_total <- X_total[,var_subset[,1]]
 #3. Uses descriptive activity names to name the activities in the data set
 colnames(Y_total) <- "activity"
 Y_total$activitylabel <- factor(Y_total$activity, labels = as.character(labels[,2]))
-activitylabel <- Y_total[,2]
 
 # 4. Appropriately labels the data set with descriptive variable names.
 colnames(X_total) <- variables[var_subset[,1],2]
@@ -35,6 +34,6 @@ colnames(X_total) <- variables[var_subset[,1],2]
 # 5. From the data set in step 4, creates a second, independent tidy data set with the average of each
 # variable for each activity and each subject.
 colnames(sub_total) <- "subject"
-total <- cbind(X_total, activitylabel, sub_total)
-total_mean <- total %>% group_by(activitylabel, subject) %>% summarize_each(funs(mean))
+total <- cbind(X_total, Y_total$activitylabel, sub_total)
+total_mean <- total %>% group_by(Y_total$activitylabel, subject) %>% summarize_each(funs(mean))
 write.table(total_mean, file = "./UCI HAR Dataset/Tidydata.txt", row.names = FALSE, col.names = TRUE)
